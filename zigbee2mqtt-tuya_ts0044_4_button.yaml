@@ -14,7 +14,7 @@ blueprint:
       name: State
       selector:
         entity:
-          domain: select
+          domain: event
           integration: mqtt
           multiple: false
 
