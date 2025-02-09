@@ -3,15 +3,8 @@ blueprint:
   description: Zigbee Tuya TS0044 4 Button
   domain: automation
   input:
-    mqtt_entity:
-      description: The "friendly" Tuya TS0044 4 Button device name as is registered in zigbee2mqtt
-      name: Name
-    base_topic:
-      description: The base topic as defined in the zigbee2mqtt config
-      default: zigbee2mqtt
-      name: Base Topic
-    state_entity:
-      name: State
+    entity:
+      name: Entity Action State
       selector:
         entity:
           domain: event
@@ -43,7 +36,7 @@ max_exceeded: silent
 
 trigger:
   - platform: state
-    entity_id: !input mqtt_entity
+    entity_id: !input entity
 
 action:
   - variables:
