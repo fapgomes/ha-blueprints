@@ -41,27 +41,22 @@ blueprint:
 mode: single
 max_exceeded: silent
 
-trigger_variables:
-  mqtt_entity: !input mqtt_entity
-  base_topic:  !input base_topic
-
 trigger:
-  - platform: mqtt
-    topic: "{{ base_topic  ~ '/' ~ mqtt_entity ~ '/action' }}"
-  - platform: state
-    entity_id: !input "state_entity"
+  - platform: event
+    event_type: button_one_action
+    event_data:
+      entity_id: !input mqtt_entity
 
 action:
   - variables:
-      platform: "{{ trigger.platform }}"
-      payload:  "{% if trigger.to_state|default(false,true) %}{{ trigger.to_state.state }}{% else %}{{ trigger.payload }}{% endif %}"
+      event_type: "{{ trigger.event.data.action }}"
   - choose:
       - conditions:
-          - "{{ platform == 'mqtt' and payload == '1_single' }}"
-        sequence: !input "button_one_short_press"
+          - "{{ event_type == '1_single' }}"
+        sequence: !input button_one_short_press
       - conditions:
-          - "{{ platform == 'mqtt' and payload == '1_double' }}"
-        sequence: !input "button_one_double_press"
+          - "{{ event_type == '1_double' }}"
+        sequence: !input button_one_double_press
       - conditions:
-          - "{{ platform == 'mqtt' and payload == '1_hold' }}"
-        sequence: !input "button_one_long_press"
+          - "{{ event_type == '1_hold' }}"
+        sequence: !input button_one_long_press
