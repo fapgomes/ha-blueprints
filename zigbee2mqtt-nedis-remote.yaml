@@ -1,0 +1,72 @@
+blueprint:
+  name: Zigbee2MQTT - Nedis remote
+  description: Zigbee Nedis Remote
+  domain: automation
+  input:
+    mode:
+      name: Automation Modes
+      description: https://www.home-assistant.io/docs/automation/modes/
+      default: single
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - single
+            - restart
+            - queued
+            - parallel
+    remote:
+      name: Nedis button
+      description: Button for nedis remote
+      selector:
+        entity:
+          domain:
+          - event
+          multiple: true
+    arm_all_zones:
+      name: arm_all_zones button
+      description: Action to run top right button with single press
+      default: []
+      selector:
+        action: {}
+    emergency:
+      name: emergency button
+      description: Action to run top left button with single press
+      default: []
+      selector:
+        action: {}
+    arm_day_zones:
+      name: arm_day_zones button
+      description: Action to run bottom left button with single press
+      default: []
+      selector:
+        action: {}
+    disarm:
+      name: disarm button
+      description: Action to run bottom right button with single press
+      default: []
+      selector:
+        action: {}
+mode: !input mode
+max_exceeded: silent
+trigger:
+  - platform: state
+    entity_id: !input remote
+condition:
+  - "{{ trigger.to_state.attributes.event_type != '' }}"
+action:
+  - variables:
+      event_type: "{{ trigger.to_state.attributes.event_type }}"
+  - choose:
+      - conditions:
+          - "{{ event_type == 'arm_all_zones' }}"
+        sequence: !input arm_all_zones
+      - conditions:
+          - "{{ event_type == 'emergency' }}"
+        sequence: !input emergency
+      - conditions:
+          - "{{ event_type == 'arm_day_zones' }}"
+        sequence: !input arm_day_zones
+      - conditions:
+          - "{{ event_type == 'disarm' }}"
+        sequence: !input disarm
