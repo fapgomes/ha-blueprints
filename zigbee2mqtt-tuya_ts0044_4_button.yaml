@@ -1,0 +1,67 @@
+blueprint:
+  name: Zigbee2MQTT - TS044 4 Button
+  description: Zigbee Tuya TS0044 4 Button
+  domain: automation
+  input:
+    mqtt_entity:
+      description: The "friendly" Tuya TS0044 4 Button device name as is registered in zigbee2mqtt
+      name: Name
+    base_topic:
+      description: The base topic as defined in the zigbee2mqtt config
+      default: zigbee2mqtt
+      name: Base Topic
+    state_entity:
+      name: State
+      selector:
+        entity:
+          domain: select
+          integration: mqtt
+          multiple: false
+
+    # Button 1 Input Definition
+    button_one_short_press:
+      name: Single Press - Button 1
+      description: Action to run on Button 1 - Single Press
+      default: []
+      selector:
+        action: {}
+    button_one_double_press:
+      name: Double Press - Button 1
+      description: Action to run on Button 1 - Double Press
+      default: []
+      selector:
+        action: {}
+    button_one_long_press:
+      name: Long Press - Button 1
+      description: Action to run on Button 1 - Long Press
+      default: []
+      selector:
+        action: {}
+
+mode: single
+max_exceeded: silent
+
+trigger_variables:
+  mqtt_entity: !input mqtt_entity
+  base_topic:  !input base_topic
+
+trigger:
+  - platform: mqtt
+    topic: "{{ base_topic  ~ '/' ~ mqtt_entity ~ '/action' }}"
+  - platform: state
+    entity_id: !input "state_entity"
+
+action:
+  - variables:
+      platform: "{{ trigger.platform }}"
+      payload:  "{% if trigger.to_state|default(false,true) %}{{ trigger.to_state.state }}{% else %}{{ trigger.payload }}{% endif %}"
+  - choose:
+      - conditions:
+          - "{{ platform == 'mqtt' and payload == 'single' }}"
+        sequence: !input "button_one_short_press"
+      - conditions:
+          - "{{ platform == 'mqtt' and payload == 'double' }}"
+        sequence: !input "button_one_double_press"
+      - conditions:
+          - "{{ platform == 'mqtt' and payload == 'hold' }}"
+        sequence: !input "button_one_long_press"
