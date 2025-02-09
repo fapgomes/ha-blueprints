@@ -42,10 +42,8 @@ mode: single
 max_exceeded: silent
 
 trigger:
-  - platform: event
-    event_type: button_one_action
-    event_data:
-      entity_id: !input mqtt_entity
+  - platform: state
+    entity_id: !input mqtt_entity
 
 action:
   - variables:
