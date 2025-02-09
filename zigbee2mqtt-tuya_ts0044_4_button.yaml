@@ -57,11 +57,11 @@ action:
       payload:  "{% if trigger.to_state|default(false,true) %}{{ trigger.to_state.state }}{% else %}{{ trigger.payload }}{% endif %}"
   - choose:
       - conditions:
-          - "{{ platform == 'mqtt' and payload == 'single' }}"
+          - "{{ platform == 'mqtt' and payload == '1_single' }}"
         sequence: !input "button_one_short_press"
       - conditions:
-          - "{{ platform == 'mqtt' and payload == 'double' }}"
+          - "{{ platform == 'mqtt' and payload == '1_double' }}"
         sequence: !input "button_one_double_press"
       - conditions:
-          - "{{ platform == 'mqtt' and payload == 'hold' }}"
+          - "{{ platform == 'mqtt' and payload == '1_hold' }}"
         sequence: !input "button_one_long_press"
