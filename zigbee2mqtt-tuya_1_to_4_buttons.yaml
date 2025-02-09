@@ -105,7 +105,6 @@ condition:
 action:
   - variables:
       event_type: "{{ trigger.to_state.attributes.event_type }}"
-      button: "{{ trigger.to_state.attributes.button | default('undefined') }}"
   - choose:
       - conditions:
           - "{{ event_type == '1_single' }}"
