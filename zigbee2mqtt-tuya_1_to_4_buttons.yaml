@@ -3,6 +3,18 @@ blueprint:
   description: Zigbee Tuya 1 to 4 Buttons
   domain: automation
   input:
+    mode:
+      name: Automation Modes
+      description: https://www.home-assistant.io/docs/automation/modes/
+      default: parallel
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - single
+            - restart
+            - queued
+            - parallel
     remote:
       name: Tuya button
       description: Works with 1-4 button remotes
@@ -83,7 +95,8 @@ blueprint:
       default: []
       selector:
         action: {}
-mode: queued
+mode: !input mode
+max_exceeded: silent
 trigger:
   - platform: state
     entity_id: !input remote
