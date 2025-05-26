@@ -108,10 +108,10 @@ action:
       button: "{{ trigger.to_state.attributes.button | default('undefined') }}"
   - choose:
       - conditions:
-          - "{{ event_type == '1_single' }}"
+          - "{{ event_type in ['1_single', 'single'] }}"
         sequence: !input button_1_short_press
       - conditions:
-          - "{{ event_type == '1_double' }}"
+          - "{{ event_type in ['1_double', 'double'] }}"
         sequence: !input button_1_double_press
       - conditions:
           - "{{ event_type == 'hold' and button == 1 }}"
