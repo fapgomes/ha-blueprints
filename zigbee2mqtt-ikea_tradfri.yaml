@@ -23,15 +23,9 @@ blueprint:
           domain:
           - event
           multiple: true
-    on:
-      name: on action
+    test:
+      name: on button
       description: Action for single press the button
-      default: []
-      selector:
-        action: {}
-    off:
-      name: off action
-      description: Action for double press the button
       default: []
       selector:
         action: {}
