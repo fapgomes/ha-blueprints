@@ -2,6 +2,13 @@
 
 ## Z2M blueprints based on events:
 
+Remember that you need to enable experimental\_event\_entities.
+
+```
+homeassistant:
+  experimental_event_entities: true
+```
+
 ### For Tuya Button (supports 1 to 4 buttons):
 
 <p align="center">
