@@ -29,12 +29,6 @@ blueprint:
       default: []
       selector:
         action: {}
-    test:
-      name: off action
-      description: Action for double press the button
-      default: []
-      selector:
-        action: {}
     brightness_move_up:
       name: brightness_move_up action
       description: Action for pressing the button
