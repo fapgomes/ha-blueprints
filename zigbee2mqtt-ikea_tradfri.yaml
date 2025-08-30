@@ -60,7 +60,10 @@ action:
   - choose:
       - conditions:
           - "{{ event_type == 'on' }}"
-        sequence: !input test
+        sequence: !input on
+      - conditions:
+          - "{{ event_type == 'off' }}"
+        sequence: !input off
       - conditions:
           - "{{ event_type == 'brightness_move_up' }}"
         sequence: !input brightness_move_up
