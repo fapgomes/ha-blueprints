@@ -1,0 +1,72 @@
+blueprint:
+  name: Zigbee2MQTT - IKEA tradfri
+  description: Zigbee IKEA tradfri
+  domain: automation
+  input:
+    mode:
+      name: Automation Modes
+      description: https://www.home-assistant.io/docs/automation/modes/
+      default: single
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - single
+            - restart
+            - queued
+            - parallel
+    remote:
+      name: tradfri button
+      description: Button for IKEA tradfri 
+      selector:
+        entity:
+          domain:
+          - event
+          multiple: true
+    on:
+      name: on action
+      description: Action for single press the button
+      default: []
+      selector:
+        action: {}
+    off:
+      name: off action
+      description: Action for double press the button
+      default: []
+      selector:
+        action: {}
+    brightness_move_up:
+      name: brightness_move_up action
+      description: Action for pressing the button
+      default: []
+      selector:
+        action: {}
+    brightness_stop:
+      name: brightness_stop action
+      description: Action occour when stop pressing the button for a long time
+      default: []
+      selector:
+        action: {}
+mode: !input mode
+max_exceeded: silent
+trigger:
+  - platform: state
+    entity_id: !input remote
+condition:
+  - "{{ trigger.to_state.attributes.event_type != '' }}"
+action:
+  - variables:
+      event_type: "{{ trigger.to_state.attributes.event_type }}"
+  - choose:
+      - conditions:
+          - "{{ event_type == 'on' }}"
+        sequence: !input on
+      - conditions:
+          - "{{ event_type == 'off' }}"
+        sequence: !input off
+      - conditions:
+          - "{{ event_type == 'brightness_move_up' }}"
+        sequence: !input brightness_move_up
+      - conditions:
+          - "{{ event_type == 'brightness_stop' }}"
+        sequence: !input brightness_stop
