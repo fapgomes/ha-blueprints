@@ -29,7 +29,7 @@ blueprint:
       default: []
       selector:
         action: {}
-    off:
+    test:
       name: off action
       description: Action for double press the button
       default: []
