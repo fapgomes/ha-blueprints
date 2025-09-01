@@ -59,8 +59,8 @@ max_exceeded: silent
 
 trigger:
   - platform: state
-    entity_id: >
-      {{ device_entities(!input remote) | select('search', 'cube') | list | first }}
+    device_id: !input remote
+    domain: sensor
 
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
