@@ -1,0 +1,96 @@
+blueprint:
+  name: Zigbee2MQTT - Aqara Cube
+  description: Zigbee Aqara Cube (support 6 actions)
+  domain: automation
+  input:
+    mode:
+      name: Automation Modes
+      description: https://www.home-assistant.io/docs/automation/modes/
+      default: parallel
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - single
+            - restart
+            - queued
+            - parallel
+    remote:
+      name: Aqara Cube
+      description: Works with aqara cube
+      selector:
+        entity:
+          domain:
+            - event
+          multiple: true
+    tap_on_side_0:
+      name: tap on side 0
+      description: Action to run on tap on side 0
+      default: []
+      selector:
+        action: {}
+    tap_on_side_1:
+      name: tap on side 1
+      description: Action to run on tap on side 1
+      default: []
+      selector:
+        action: {}
+    tap_on_side_2:
+      name: tap on side 2
+      description: Action to run on tap on side 2
+      default: []
+      selector:
+        action: {}
+    tap_on_side_3:
+      name: tap on side 3
+      description: Action to run on tap on side 3
+      default: []
+      selector:
+        action: {}
+    tap_on_side_4:
+      name: tap on side 4
+      description: Action to run on tap on side 4
+      default: []
+      selector:
+        action: {}
+    tap_on_side_5:
+      name: tap on side 5
+      description: Action to run on tap on side 5
+      default: []
+      selector:
+        action: {}
+mode: !input mode
+max_exceeded: silent
+trigger:
+  - platform: state
+    entity_id: !input remote
+condition:
+  - "{{ trigger.to_state.attributes.event_type != '' }}"
+action:
+  - variables:
+      event_type: "{{ trigger.to_state.attributes.event_type }}"
+      button: "{{ trigger.to_state.attributes.button | default('undefined') }}"
+  - choose:
+      - conditions:
+          - "{{ event_type == 'tap' and side == 0 }}"
+        sequence: !input tap_on_side_0
+      - conditions:
+          - "{{ event_type == 'tap' and side == 1 }}"
+        sequence: !input tap_on_side_1
+      - conditions:
+          - "{{ event_type == 'tap' and side == 2 }}"
+        sequence: !input tap_on_side_2
+      - conditions:
+          - "{{ event_type == 'tap' and side == 3 }}"
+        sequence: !input tap_on_side_3
+      - conditions:
+          - "{{ event_type == 'tap' and side == 4 }}"
+        sequence: !input tap_on_side_4
+      - conditions:
+          - "{{ event_type == 'tap' and side == 5 }}"
+        sequence: !input tap_on_side_5
+    default:
+      - action: logbook.log
+        data_template:
+          name: "Zigbee2MQTT - Aqara Cube"
+          message: "event_type=={{ repr(event_type) }} and side=={{ repr(side) }}"
