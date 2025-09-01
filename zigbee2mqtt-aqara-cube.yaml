@@ -6,7 +6,7 @@ blueprint:
     mode:
       name: Automation Modes
       description: https://www.home-assistant.io/docs/automation/modes/
-      default: parallel
+      default: single
       selector:
         select:
           mode: dropdown
@@ -69,7 +69,7 @@ condition:
 action:
   - variables:
       event_type: "{{ trigger.to_state.attributes.event_type }}"
-      side: "{{ trigger.to_state.attributes.side | default('undefined') }}"
+      side: "{{ state_attr(entity_id, 'side') | default('undefined') }}"
   - choose:
       - conditions:
           - "{{ event_type == 'tap' and side == 0 }}"
