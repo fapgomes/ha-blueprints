@@ -147,4 +147,4 @@ action:
       - action: logbook.log
         data_template:
           name: "Zigbee2MQTT - Tuya 1 to 4 Buttons"
-          message: "event_type=={{ repr(event_type) }} and button=={{ repr(button) }}"
+          message: "event_type=={{ event_type }} and button=={{ button }}"
