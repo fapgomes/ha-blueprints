@@ -20,10 +20,9 @@ blueprint:
       name: Aqara Cube
       description: Select Aqara Cube device
       selector:
-        entity:
+        device:
           integration: mqtt
-          domain: sensor
-          multiple: true
+
     tap_on_side_0:
       name: Tap when side 0 selected
       default: []
@@ -60,7 +59,8 @@ max_exceeded: silent
 
 trigger:
   - platform: state
-    entity_id: !input remote
+    entity_id: >
+      {{ device_entities(!input remote) | select('search', 'cube') | list | first }}
 
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
