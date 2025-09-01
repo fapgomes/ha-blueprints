@@ -22,9 +22,8 @@ blueprint:
       selector:
         entity:
           integration: mqtt
-          multiple: false
-          filter:
-            manufacturer: Aqara
+          domain: sensor
+          multiple: true
     tap_on_side_0:
       name: Tap when side 0 selected
       default: []
