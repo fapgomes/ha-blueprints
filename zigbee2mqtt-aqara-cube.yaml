@@ -21,8 +21,9 @@ blueprint:
       description: Select the Aqara Cube action sensor
       selector:
         entity:
-          integration: mqtt
-          domain: sensor
+          domain:
+            - event
+          multiple: true          
 
     tap_on_side_0:
       name: Tap when side 0 selected
@@ -64,7 +65,7 @@ trigger:
 
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
-  side: "{{ trigger.to_state.attributes.side | default(-1) }}"
+  side: 0
 
 condition:
   - "{{ event_type != '' and side != -1 }}"
