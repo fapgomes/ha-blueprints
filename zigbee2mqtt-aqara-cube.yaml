@@ -93,4 +93,4 @@ action:
       - action: logbook.log
         data_template:
           name: "Zigbee2MQTT - Aqara Cube"
-          message: "event_type=={{ repr(event_type) }} and side=={{ repr(side) }}"
+          message: "event_type=={{ event_type }} and side=={{ side }}"
