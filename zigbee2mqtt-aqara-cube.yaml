@@ -18,10 +18,11 @@ blueprint:
 
     remote:
       name: Aqara Cube
-      description: Select Aqara Cube device
+      description: Select the Aqara Cube action sensor
       selector:
-        device:
+        entity:
           integration: mqtt
+          domain: sensor
 
     tap_on_side_0:
       name: Tap when side 0 selected
@@ -59,8 +60,7 @@ max_exceeded: silent
 
 trigger:
   - platform: state
-    device_id: !input remote
-    domain: sensor
+    entity_id: !input remote
 
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
