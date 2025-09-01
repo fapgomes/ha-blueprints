@@ -69,7 +69,7 @@ condition:
 action:
   - variables:
       event_type: "{{ trigger.to_state.attributes.event_type }}"
-      side: "{{ trigger.to_state.attributes.button | default('undefined') }}"
+      side: "{{ trigger.to_state.attributes.side | default('undefined') }}"
   - choose:
       - conditions:
           - "{{ event_type == 'tap' and side == 0 }}"
