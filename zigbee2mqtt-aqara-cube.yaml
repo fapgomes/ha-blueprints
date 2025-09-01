@@ -65,7 +65,9 @@ trigger:
 
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
-  side: 0
+  side: >
+    {% set side_sensor = 'sensor.' + trigger.entity_id.split('.')[-1] + '_side' %}
+    {{ states(side_sensor) | int }}
 
 condition:
   - "{{ event_type != '' and side != -1 }}"
