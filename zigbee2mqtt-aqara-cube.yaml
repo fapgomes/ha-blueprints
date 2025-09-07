@@ -1,5 +1,5 @@
 blueprint:
-  name: Zigbee2MQTT - Aqara Cube
+  name: Zigbee2MQTT - Aqara Cube 
   description: Controls Aqara Cube through Zigbee2MQTT (support 12 actions)
   domain: automation
   input:
@@ -15,6 +15,7 @@ blueprint:
             - restart
             - queued
             - parallel
+
     remote:
       name: Aqara Cube
       description: Select the Aqara Cube action sensor
@@ -22,7 +23,8 @@ blueprint:
         entity:
           domain:
             - event
-          multiple: true
+          multiple: true          
+
     tap_on_side_0:
       name: Tap when side 0 selected
       default: []
@@ -53,6 +55,7 @@ blueprint:
       default: []
       selector:
         action: {}
+
     shake_on_side_0:
       name: Shake when side 0 selected
       default: []
@@ -86,116 +89,120 @@ blueprint:
 
 mode: !input mode
 max_exceeded: silent
+
 trigger:
   - platform: state
     entity_id: !input remote
+
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
   side: >
     {% set side_sensor = 'sensor.' + trigger.entity_id.split('.')[-1] + '_side' %}
-    {{ states[side_sensor].state | int(default=0) }}
+    {{ states(side_sensor) | int(0) }}
+
 condition:
   - "{{ event_type != '' and side != -1 }}"
+
 action:
   - choose:
-      - conditions:
-          - "{{ event_type == 'tap' and side == 0 }}"
+      - conditions: "{{ event_type == 'tap' and side == 0 }}"
         sequence:
-          - !input tap_on_side_0
+          - sequence: !input tap_on_side_0
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: tap | Side: 0"
-      - conditions:
-          - "{{ event_type == 'tap' and side == 1 }}"
+
+      - conditions: "{{ event_type == 'tap' and side == 1 }}"
         sequence:
-          - !input tap_on_side_1
+          - sequence: !input tap_on_side_1
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: tap | Side: 1"
-      - conditions:
-          - "{{ event_type == 'tap' and side == 2 }}"
+
+      - conditions: "{{ event_type == 'tap' and side == 2 }}"
         sequence:
-          - !input tap_on_side_2
+          - sequence: !input tap_on_side_2
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: tap | Side: 2"
-      - conditions:
-          - "{{ event_type == 'tap' and side == 3 }}"
+
+      - conditions: "{{ event_type == 'tap' and side == 3 }}"
         sequence:
-          - !input tap_on_side_3
+          - sequence: !input tap_on_side_3
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: tap | Side: 3"
-      - conditions:
-          - "{{ event_type == 'tap' and side == 4 }}"
+
+      - conditions: "{{ event_type == 'tap' and side == 4 }}"
         sequence:
-          - !input tap_on_side_4
+          - sequence: !input tap_on_side_4
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: tap | Side: 4"
-      - conditions:
-          - "{{ event_type == 'tap' and side == 5 }}"
+
+      - conditions: "{{ event_type == 'tap' and side == 5 }}"
         sequence:
-          - !input tap_on_side_5
+          - sequence: !input tap_on_side_5
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: tap | Side: 5"
-      - conditions:
-          - "{{ event_type == 'shake' and side == 0 }}"
+
+      - conditions: "{{ event_type == 'shake' and side == 0 }}"
         sequence:
-          - !input shake_on_side_0
+          - sequence: !input shake_on_side_0
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: shake | Side: 0"
-      - conditions:
-          - "{{ event_type == 'shake' and side == 1 }}"
+
+      - conditions: "{{ event_type == 'shake' and side == 1 }}"
         sequence:
-          - !input shake_on_side_1
+          - sequence: !input shake_on_side_1
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: shake | Side: 1"
-      - conditions:
-          - "{{ event_type == 'shake' and side == 2 }}"
+
+      - conditions: "{{ event_type == 'shake' and side == 2 }}"
         sequence:
-          - !input shake_on_side_2
+          - sequence: !input shake_on_side_2
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: shake | Side: 2"
-      - conditions:
-          - "{{ event_type == 'shake' and side == 3 }}"
+
+      - conditions: "{{ event_type == 'shake' and side == 3 }}"
         sequence:
-          - !input shake_on_side_3
+          - sequence: !input shake_on_side_3
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: shake | Side: 3"
-      - conditions:
-          - "{{ event_type == 'shake' and side == 4 }}"
+
+      - conditions: "{{ event_type == 'shake' and side == 4 }}"
         sequence:
-          - !input shake_on_side_4
+          - sequence: !input shake_on_side_4
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: shake | Side: 4"
-      - conditions:
-          - "{{ event_type == 'shake' and side == 5 }}"
+
+      - conditions: "{{ event_type == 'shake' and side == 5 }}"
         sequence:
-          - !input shake_on_side_5
+          - sequence: !input shake_on_side_5
           - action: logbook.log
             data:
               name: "Zigbee2MQTT - Aqara Cube"
               message: "Event: shake | Side: 5"
+
     default:
-      - action: logbook.log
+      - service: logbook.log
         data:
           name: "Zigbee2MQTT - Aqara Cube"
           message: "Event: {{ event_type }} | Side: {{ side }}"
