@@ -1,5 +1,5 @@
 blueprint:
-  name: Zigbee2MQTT - Aqara Cube 
+  name: Zigbee2MQTT - Aqara Cube
   description: Controls Aqara Cube through Zigbee2MQTT (support 12 actions)
   domain: automation
   input:
@@ -15,7 +15,6 @@ blueprint:
             - restart
             - queued
             - parallel
-
     remote:
       name: Aqara Cube
       description: Select the Aqara Cube action sensor
@@ -23,8 +22,7 @@ blueprint:
         entity:
           domain:
             - event
-          multiple: true          
-
+          multiple: true
     tap_on_side_0:
       name: Tap when side 0 selected
       default: []
@@ -55,7 +53,6 @@ blueprint:
       default: []
       selector:
         action: {}
-
     shake_on_side_0:
       name: Shake when side 0 selected
       default: []
@@ -89,20 +86,16 @@ blueprint:
 
 mode: !input mode
 max_exceeded: silent
-
 trigger:
   - platform: state
     entity_id: !input remote
-
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
   side: >
     {% set side_sensor = 'sensor.' + trigger.entity_id.split('.')[-1] + '_side' %}
     {{ states[side_sensor].state | int(default=0) }}
-
 condition:
   - "{{ event_type != '' and side != -1 }}"
-
 action:
   - choose:
       - conditions:
