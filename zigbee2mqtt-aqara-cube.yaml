@@ -1,6 +1,6 @@
 blueprint:
   name: Zigbee2MQTT - Aqara Cube 
-  description: Controls Aqara Cube through Zigbee2MQTT (support 6 actions)
+  description: Controls Aqara Cube through Zigbee2MQTT (support 12 actions)
   domain: automation
   input:
     mode:
@@ -56,6 +56,37 @@ blueprint:
       selector:
         action: {}
 
+    shake_on_side_0:
+      name: Shake when side 0 selected
+      default: []
+      selector:
+        action: {}
+    shake_on_side_1:
+      name: Shake when side 1 selected
+      default: []
+      selector:
+        action: {}
+    shake_on_side_2:
+      name: Shake when side 2 selected
+      default: []
+      selector:
+        action: {}
+    shake_on_side_3:
+      name: Shake when side 3 selected
+      default: []
+      selector:
+        action: {}
+    shake_on_side_4:
+      name: Shake when side 4 selected
+      default: []
+      selector:
+        action: {}
+    shake_on_side_5:
+      name: Shake when side 5 selected
+      default: []
+      selector:
+        action: {}
+
 mode: !input mode
 max_exceeded: silent
 
@@ -92,6 +123,24 @@ action:
       - conditions:
           - "{{ event_type == 'tap' and side == 5 }}"
         sequence: !input tap_on_side_5
+      - conditions:
+          - "{{ event_type == 'shake' and side == 0 }}"
+        sequence: !input shake_on_side_0
+      - conditions:
+          - "{{ event_type == 'shake' and side == 1 }}"
+        sequence: !input shake_on_side_1
+      - conditions:
+          - "{{ event_type == 'shake' and side == 2 }}"
+        sequence: !input shake_on_side_2
+      - conditions:
+          - "{{ event_type == 'shake' and side == 3 }}"
+        sequence: !input shake_on_side_3
+      - conditions:
+          - "{{ event_type == 'shake' and side == 4 }}"
+        sequence: !input shake_on_side_4
+      - conditions:
+          - "{{ event_type == 'shake' and side == 5 }}"
+        sequence: !input shake_on_side_5
     default:
       - action: logbook.log
         data:
