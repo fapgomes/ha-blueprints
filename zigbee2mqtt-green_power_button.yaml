@@ -1,0 +1,63 @@
+blueprint:
+  name: Zigbee2MQTT - 3 Button Green Power
+  description: Support for Zigbee Green Power Button
+  domain: automation
+  input:
+    mode:
+      name: Automation Modes
+      description: https://www.home-assistant.io/docs/automation/modes/
+      default: single
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - single
+            - restart
+            - queued
+            - parallel
+    remote:
+      name: greenpower button
+      description: Button GreenPower
+      selector:
+        entity:
+          domain:
+          - event
+          multiple: true
+    "on":
+      name: on action
+      description: Action for single press on the first button (on)
+      default: []
+      selector:
+        action: {}
+    "off":
+      name: off action
+      description: Action for single press on the second button (off)
+      default: []
+      selector:
+        action: {}
+    recall_scene1:
+      name: recall_scene1 action
+      description: Action for single press on the button recall_scene1 (the third button)
+      default: []
+      selector:
+        action: {}
+mode: !input mode
+max_exceeded: silent
+trigger:
+  - platform: state
+    entity_id: !input remote
+condition:
+  - "{{ trigger.to_state.attributes.event_type != '' }}"
+action:
+  - variables:
+      event_type: "{{ trigger.to_state.attributes.event_type }}"
+  - choose:
+      - conditions:
+          - "{{ event_type == 'on' }}"
+        sequence: !input "on"
+      - conditions:
+          - "{{ event_type == 'off' }}"
+        sequence: !input "off"
+      - conditions:
+          - "{{ event_type == 'recall_scene1' }}"
+        sequence: !input recall_scene1
