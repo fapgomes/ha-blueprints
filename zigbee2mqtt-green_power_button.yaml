@@ -23,15 +23,15 @@ blueprint:
           domain:
           - event
           multiple: true
-    "on":
-      name: on action
-      description: Action for single press on the first button (on)
+    "off":
+      name: off action
+      description: Action for single press on the first button (off)
       default: []
       selector:
         action: {}
-    "off":
-      name: off action
-      description: Action for single press on the second button (off)
+    "on":
+      name: on action
+      description: Action for single press on the second button (on)
       default: []
       selector:
         action: {}
