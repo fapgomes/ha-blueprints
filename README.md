@@ -46,7 +46,7 @@ homeassistant:
 ### For 3 button switch without batteries:
 
 <p align="center">
-  <img alt="Aqara Cube" src="imgs/3-button-wireless-zigbee-smart-switch-without-batteries.jpg" width="30%">
+  <img alt="3 green button switch" src="imgs/3-button-wireless-zigbee-smart-switch-without-batteries.jpg" width="30%">
 </p>
 
-[![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Ffapgomes%2Fha-blueprints%2Fblob%2Fmain%2Fzigbee2mqtt-green_power_button.yaml)](https://github.com/fapgomes/ha-blueprints/blob/main/zigbee2mqtt-green_power_button.yaml)
+[![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Ffapgomes%2Fha-blueprints%2Fblob%2Fmain%2Fzigbee2mqtt-green_power_button.yaml)
