@@ -43,14 +43,14 @@ blueprint:
         action: {}
 mode: !input mode
 max_exceeded: silent
+variables:
+  event_type: "{{ trigger.to_state.attributes.event_type }}"  
 trigger:
   - platform: state
     entity_id: !input remote
 condition:
-  - "{{ trigger.to_state.attributes.event_type != '' }}"
+  - "{{ event_type in ['on', 'off', 'recall_scene1']}}"
 action:
-  - variables:
-      event_type: "{{ trigger.to_state.attributes.event_type }}"
   - choose:
       - conditions:
           - "{{ event_type == 'on' }}"
