@@ -1,7 +1,11 @@
 blueprint:
   name: Zigbee2MQTT - Tuya 1 to 4 Buttons
-  description: Zigbee Tuya 1 to 4 Buttons
+  description: >-
+    Blueprint for Tuya Zigbee scene switches with 1 to 4 buttons via
+    Zigbee2MQTT. Supports single press, double press, and hold actions
+    for each button. Compatible with most Tuya TS004x and similar remotes.
   domain: automation
+  source_url: https://github.com/fapg/ha-blueprints/blob/main/zigbee2mqtt-tuya_1_to_4_buttons.yaml
   input:
     mode:
       name: Automation Modes
@@ -100,8 +104,11 @@ max_exceeded: silent
 trigger:
   - platform: state
     entity_id: !input remote
+    not_to:
+      - unavailable
+      - unknown
 condition:
-  - "{{ trigger.to_state.attributes.event_type != '' }}"
+  - "{{ trigger.to_state.attributes.event_type | default('') != '' }}"
 action:
   - variables:
       event_type: "{{ trigger.to_state.attributes.event_type }}"
@@ -114,7 +121,7 @@ action:
           - "{{ event_type in ['1_double', 'double'] }}"
         sequence: !input button_1_double_press
       - conditions:
-          - "{{ event_type == 'hold' and button == 1 }}"
+          - "{{ event_type in ['1_hold', 'hold'] or (event_type == 'hold' and button | int == 1) }}"
         sequence: !input button_1_hold
       - conditions:
           - "{{ event_type == '2_single' }}"
@@ -123,7 +130,7 @@ action:
           - "{{ event_type == '2_double' }}"
         sequence: !input button_2_double_press
       - conditions:
-          - "{{ event_type == 'hold' and button == 2 }}"
+          - "{{ event_type in ['2_hold'] or (event_type == 'hold' and button | int == 2) }}"
         sequence: !input button_2_hold
       - conditions:
           - "{{ event_type == '3_single' }}"
@@ -132,7 +139,7 @@ action:
           - "{{ event_type == '3_double' }}"
         sequence: !input button_3_double_press
       - conditions:
-          - "{{ event_type == 'hold' and button == 3 }}"
+          - "{{ event_type in ['3_hold'] or (event_type == 'hold' and button | int == 3) }}"
         sequence: !input button_3_hold
       - conditions:
           - "{{ event_type == '4_single' }}"
@@ -141,10 +148,10 @@ action:
           - "{{ event_type == '4_double' }}"
         sequence: !input button_4_double_press
       - conditions:
-          - "{{ event_type == 'hold' and button == 4 }}"
+          - "{{ event_type in ['4_hold'] or (event_type == 'hold' and button | int == 4) }}"
         sequence: !input button_4_hold
     default:
       - action: logbook.log
-        data_template:
+        data:
           name: "Zigbee2MQTT - Tuya 1 to 4 Buttons"
           message: "event_type=={{ event_type }} and button=={{ button }}"
