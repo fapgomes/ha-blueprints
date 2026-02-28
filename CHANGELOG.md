@@ -35,6 +35,9 @@
 - Replace deprecated `service:` with `action:` in logbook default
 - Remove redundant nested `- sequence:` inside choose sequences
 - Add `not_to: [unavailable, unknown]` trigger filter
+- Fix side sensor name construction (was resolving to `_action_side` instead of `_side`)
+- Add support for all 10 event types: tap, shake, slide, flip180, flip90, throw, wakeup, fall, rotate_left, rotate_right
+- Change `side` default from `0` to `-1` to avoid false matches when sensor is unavailable
 
 ### zigbee2mqtt-green_power_button.yaml
 
