@@ -11,3 +11,20 @@
 - Add `not_to: [unavailable, unknown]` trigger filter to avoid unnecessary fires
 - Add `default('')` guard on `event_type` condition to prevent errors
 - Improve blueprint description and add `source_url` for community sharing
+- Fix `source_url` from `fapg` to `fapgomes`
+
+### zigbee2mqtt-nedis-remote.yaml
+
+- Improve blueprint description and add `source_url`
+- Add `not_to: [unavailable, unknown]` trigger filter
+- Add `default('')` guard on `event_type` condition
+- Add logbook fallback for unknown events
+
+### zigbee2mqtt-ikea_tradfri.yaml
+
+- Improve blueprint description and add `source_url` (model E1812)
+- Fix input names and descriptions to be user-friendly (e.g., `"on action"` → `"Single Press"`)
+- Fix typo `"occour"` and incorrect action descriptions
+- Add `not_to: [unavailable, unknown]` trigger filter
+- Add `default('')` guard on `event_type` condition
+- Add logbook fallback for unknown events

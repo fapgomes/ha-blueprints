@@ -1,7 +1,10 @@
 blueprint:
   name: Zigbee2MQTT - IKEA tradfri
-  description: Zigbee IKEA tradfri
+  description: >-
+    Blueprint for IKEA TRADFRI Shortcut Button (E1812) via Zigbee2MQTT.
+    Supports single press, double press, long press, and release actions.
   domain: automation
+  source_url: https://github.com/fapgomes/ha-blueprints/blob/main/zigbee2mqtt-ikea_tradfri.yaml
   input:
     mode:
       name: Automation Modes
@@ -24,26 +27,26 @@ blueprint:
           - event
           multiple: true
     "on":
-      name: on action
-      description: Action for single press the button
+      name: Single Press
+      description: Action to run on single press
       default: []
       selector:
         action: {}
     "off":
-      name: off action
-      description: Action for double press the button
+      name: Double Press
+      description: Action to run on double press
       default: []
       selector:
         action: {}
     brightness_move_up:
-      name: brightness_move_up action
-      description: Action for pressing the button
+      name: Long Press
+      description: Action to run on long press (hold)
       default: []
       selector:
         action: {}
     brightness_stop:
-      name: brightness_stop action
-      description: Action occour when stop pressing the button for a long time
+      name: Release
+      description: Action to run when button is released after long press
       default: []
       selector:
         action: {}
@@ -52,8 +55,11 @@ max_exceeded: silent
 trigger:
   - platform: state
     entity_id: !input remote
+    not_to:
+      - unavailable
+      - unknown
 condition:
-  - "{{ trigger.to_state.attributes.event_type != '' }}"
+  - "{{ trigger.to_state.attributes.event_type | default('') != '' }}"
 action:
   - variables:
       event_type: "{{ trigger.to_state.attributes.event_type }}"
@@ -70,3 +76,8 @@ action:
       - conditions:
           - "{{ event_type == 'brightness_stop' }}"
         sequence: !input brightness_stop
+    default:
+      - action: logbook.log
+        data:
+          name: "Zigbee2MQTT - IKEA tradfri"
+          message: "event_type=={{ event_type }}"
