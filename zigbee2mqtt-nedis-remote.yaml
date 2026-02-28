@@ -1,7 +1,10 @@
 blueprint:
   name: Zigbee2MQTT - Nedis remote
-  description: Zigbee Nedis Remote
+  description: >-
+    Blueprint for Nedis Zigbee security remote via Zigbee2MQTT.
+    Supports arm all zones, emergency, arm day zones, and disarm buttons.
   domain: automation
+  source_url: https://github.com/fapgomes/ha-blueprints/blob/main/zigbee2mqtt-nedis-remote.yaml
   input:
     mode:
       name: Automation Modes
@@ -52,8 +55,11 @@ max_exceeded: silent
 trigger:
   - platform: state
     entity_id: !input remote
+    not_to:
+      - unavailable
+      - unknown
 condition:
-  - "{{ trigger.to_state.attributes.event_type != '' }}"
+  - "{{ trigger.to_state.attributes.event_type | default('') != '' }}"
 action:
   - variables:
       event_type: "{{ trigger.to_state.attributes.event_type }}"
@@ -70,3 +76,8 @@ action:
       - conditions:
           - "{{ event_type == 'disarm' }}"
         sequence: !input disarm
+    default:
+      - action: logbook.log
+        data:
+          name: "Zigbee2MQTT - Nedis remote"
+          message: "event_type=={{ event_type }}"

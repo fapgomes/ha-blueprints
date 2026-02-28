@@ -5,7 +5,7 @@ blueprint:
     Zigbee2MQTT. Supports single press, double press, and hold actions
     for each button. Compatible with most Tuya TS004x and similar remotes.
   domain: automation
-  source_url: https://github.com/fapg/ha-blueprints/blob/main/zigbee2mqtt-tuya_1_to_4_buttons.yaml
+  source_url: https://github.com/fapgomes/ha-blueprints/blob/main/zigbee2mqtt-tuya_1_to_4_buttons.yaml
   input:
     mode:
       name: Automation Modes
