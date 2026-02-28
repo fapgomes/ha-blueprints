@@ -1,7 +1,10 @@
 blueprint:
-  name: Zigbee2MQTT - Aqara Cube 
-  description: Controls Aqara Cube through Zigbee2MQTT (support 12 actions)
+  name: Zigbee2MQTT - Aqara Cube
+  description: >-
+    Blueprint for Aqara Cube via Zigbee2MQTT. Supports tap and shake
+    actions on each of the 6 sides (12 actions total).
   domain: automation
+  source_url: https://github.com/fapgomes/ha-blueprints/blob/main/zigbee2mqtt-aqara-cube.yaml
   input:
     mode:
       name: Automation Mode
@@ -93,6 +96,9 @@ max_exceeded: silent
 trigger:
   - platform: state
     entity_id: !input remote
+    not_to:
+      - unavailable
+      - unknown
 
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
@@ -106,103 +112,31 @@ condition:
 action:
   - choose:
       - conditions: "{{ event_type == 'tap' and side == 0 }}"
-        sequence:
-          - sequence: !input tap_on_side_0
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: tap | Side: 0"
-
+        sequence: !input tap_on_side_0
       - conditions: "{{ event_type == 'tap' and side == 1 }}"
-        sequence:
-          - sequence: !input tap_on_side_1
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: tap | Side: 1"
-
+        sequence: !input tap_on_side_1
       - conditions: "{{ event_type == 'tap' and side == 2 }}"
-        sequence:
-          - sequence: !input tap_on_side_2
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: tap | Side: 2"
-
+        sequence: !input tap_on_side_2
       - conditions: "{{ event_type == 'tap' and side == 3 }}"
-        sequence:
-          - sequence: !input tap_on_side_3
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: tap | Side: 3"
-
+        sequence: !input tap_on_side_3
       - conditions: "{{ event_type == 'tap' and side == 4 }}"
-        sequence:
-          - sequence: !input tap_on_side_4
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: tap | Side: 4"
-
+        sequence: !input tap_on_side_4
       - conditions: "{{ event_type == 'tap' and side == 5 }}"
-        sequence:
-          - sequence: !input tap_on_side_5
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: tap | Side: 5"
-
+        sequence: !input tap_on_side_5
       - conditions: "{{ event_type == 'shake' and side == 0 }}"
-        sequence:
-          - sequence: !input shake_on_side_0
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: shake | Side: 0"
-
+        sequence: !input shake_on_side_0
       - conditions: "{{ event_type == 'shake' and side == 1 }}"
-        sequence:
-          - sequence: !input shake_on_side_1
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: shake | Side: 1"
-
+        sequence: !input shake_on_side_1
       - conditions: "{{ event_type == 'shake' and side == 2 }}"
-        sequence:
-          - sequence: !input shake_on_side_2
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: shake | Side: 2"
-
+        sequence: !input shake_on_side_2
       - conditions: "{{ event_type == 'shake' and side == 3 }}"
-        sequence:
-          - sequence: !input shake_on_side_3
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: shake | Side: 3"
-
+        sequence: !input shake_on_side_3
       - conditions: "{{ event_type == 'shake' and side == 4 }}"
-        sequence:
-          - sequence: !input shake_on_side_4
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: shake | Side: 4"
-
+        sequence: !input shake_on_side_4
       - conditions: "{{ event_type == 'shake' and side == 5 }}"
-        sequence:
-          - sequence: !input shake_on_side_5
-          - action: logbook.log
-            data:
-              name: "Zigbee2MQTT - Aqara Cube"
-              message: "Event: shake | Side: 5"
-
+        sequence: !input shake_on_side_5
     default:
-      - service: logbook.log
+      - action: logbook.log
         data:
           name: "Zigbee2MQTT - Aqara Cube"
           message: "Event: {{ event_type }} | Side: {{ side }}"

@@ -28,3 +28,10 @@
 - Add `not_to: [unavailable, unknown]` trigger filter
 - Add `default('')` guard on `event_type` condition
 - Add logbook fallback for unknown events
+
+### zigbee2mqtt-aqara-cube.yaml
+
+- Improve blueprint description and add `source_url`
+- Replace deprecated `service:` with `action:` in logbook default
+- Remove redundant nested `- sequence:` inside choose sequences
+- Add `not_to: [unavailable, unknown]` trigger filter
