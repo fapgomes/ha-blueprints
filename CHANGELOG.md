@@ -35,3 +35,12 @@
 - Replace deprecated `service:` with `action:` in logbook default
 - Remove redundant nested `- sequence:` inside choose sequences
 - Add `not_to: [unavailable, unknown]` trigger filter
+
+### zigbee2mqtt-green_power_button.yaml
+
+- Improve blueprint description and add `source_url`
+- Move `variables` block after `trigger` for correct ordering
+- Fix input names to be user-friendly (e.g., `"off action"` → `"Button 1 (Off)"`)
+- Add `default('')` guard on `event_type` variable
+- Add `not_to: [unavailable, unknown]` trigger filter
+- Add logbook fallback for unknown events

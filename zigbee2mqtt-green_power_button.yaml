@@ -1,7 +1,10 @@
 blueprint:
   name: Zigbee2MQTT - 3 Button Green Power
-  description: Support for Zigbee Green Power Button
+  description: >-
+    Blueprint for 3-button Zigbee Green Power wireless switch (battery-free)
+    via Zigbee2MQTT. Supports off, on, and recall_scene1 actions.
   domain: automation
+  source_url: https://github.com/fapgomes/ha-blueprints/blob/main/zigbee2mqtt-green_power_button.yaml
   input:
     mode:
       name: Automation Modes
@@ -24,32 +27,35 @@ blueprint:
           - event
           multiple: true
     "off":
-      name: off action
-      description: Action for single press on the first button (off)
+      name: Button 1 (Off)
+      description: Action to run on the first button press
       default: []
       selector:
         action: {}
     "on":
-      name: on action
-      description: Action for single press on the second button (on)
+      name: Button 2 (On)
+      description: Action to run on the second button press
       default: []
       selector:
         action: {}
     recall_scene1:
-      name: recall_scene1 action
-      description: Action for single press on the button recall_scene1 (the third button)
+      name: Button 3 (Scene)
+      description: Action to run on the third button press
       default: []
       selector:
         action: {}
 mode: !input mode
 max_exceeded: silent
-variables:
-  event_type: "{{ trigger.to_state.attributes.event_type }}"  
 trigger:
   - platform: state
     entity_id: !input remote
+    not_to:
+      - unavailable
+      - unknown
+variables:
+  event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
 condition:
-  - "{{ event_type in ['on', 'off', 'recall_scene1']}}"
+  - "{{ event_type in ['on', 'off', 'recall_scene1'] }}"
 action:
   - choose:
       - conditions:
@@ -61,3 +67,8 @@ action:
       - conditions:
           - "{{ event_type == 'recall_scene1' }}"
         sequence: !input recall_scene1
+    default:
+      - action: logbook.log
+        data:
+          name: "Zigbee2MQTT - 3 Button Green Power"
+          message: "event_type=={{ event_type }}"
