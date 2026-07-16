@@ -52,6 +52,9 @@ trigger:
     not_to:
       - unavailable
       - unknown
+    not_from:
+      - unavailable
+      - unknown
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
 condition:

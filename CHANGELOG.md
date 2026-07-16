@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-07-16
+
+### All blueprints
+
+- Add `not_from: [unavailable, unknown]` trigger filter to all blueprints
+  (zigbee2mqtt-nedis-remote, zigbee2mqtt-tuya_1_to_4_buttons,
+  zigbee2mqtt-ikea_tradfri, zigbee2mqtt-aqara-cube,
+  zigbee2mqtt-green_power_button). When zigbee2mqtt or the MQTT broker
+  restarts, the `event.*_action` entities transition from `unavailable` back
+  to their last (old) event timestamp, and that state-restore transition was
+  firing the automations as if the buttons had been pressed — opening gates,
+  doors, and moving covers. `not_to` alone does not cover this case because
+  the restored "to" state is a valid timestamp.
+
 ## 2026-02-28
 
 ### zigbee2mqtt-tuya_1_to_4_buttons.yaml
