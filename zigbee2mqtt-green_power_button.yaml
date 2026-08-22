@@ -55,7 +55,9 @@ trigger:
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
 condition:
-  - "{{ event_type in ['on', 'off', 'recall_scene1'] }}"
+  # any non-empty event passes so the choose's default logbook branch stays
+  # reachable as a discovery aid for unmapped events, like the other blueprints.
+  - "{{ event_type != '' }}"
   # stale-restore guard: an event entity's state IS the receipt timestamp of
   # its last event. A genuine press is stamped ~now; a state restored after an
   # availability flap (z2m restart, MQTT reconnect) carries the *original*,

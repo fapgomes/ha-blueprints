@@ -228,9 +228,15 @@ trigger:
 
 variables:
   event_type: "{{ trigger.to_state.attributes.event_type | default('') }}"
+  # side comes from the event's own `side` attribute when present: it arrives in
+  # the same MQTT message as the trigger, so it can neither race the *_side
+  # sensor's update nor break if the entities are renamed. Events that carry no
+  # side (e.g. rotation) fall back to the derived *_side sensor, and -1 if that
+  # sensor doesn't resolve either.
   side: >
     {% set side_sensor = 'sensor.' + trigger.entity_id.split('.')[-1] | replace('_action', '') + '_side' %}
-    {{ states(side_sensor) | int(-1) }}
+    {% set attr_side = trigger.to_state.attributes.side | default(none) %}
+    {{ attr_side | int(states(side_sensor) | int(-1)) }}
 
 condition:
   - "{{ event_type != '' }}"

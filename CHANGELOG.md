@@ -17,6 +17,21 @@
   zigbee2mqtt-ikea_tradfri, zigbee2mqtt-aqara-cube,
   zigbee2mqtt-green_power_button).
 
+### zigbee2mqtt-aqara-cube.yaml
+
+- Prefer the event's own `side` attribute over the derived `*_side` sensor for
+  side detection. Reading the sensor at trigger time could race the update
+  carried by the same MQTT message (running the previous side's action) and
+  silently broke all per-side actions if either entity was renamed. Events
+  without a `side` attribute (e.g. rotation) still fall back to the sensor.
+
+### zigbee2mqtt-green_power_button.yaml
+
+- Let any non-empty `event_type` pass the automation condition so the
+  `default` logbook branch becomes reachable, serving as a discovery aid for
+  unmapped events like in the other blueprints (it was dead code: the
+  condition only admitted the three event types the `choose` already handled).
+
 ## 2026-07-16
 
 ### All blueprints
