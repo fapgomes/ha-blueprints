@@ -114,7 +114,7 @@ condition:
   #    is explicitly None passes the default() form and leaks through.
   - condition: template
     value_template: >-
-      {{ trigger.to_state.attributes.event_type not in [none, ''] }}
+      {{ trigger.to_state.attributes.event_type | default('') not in [none, ''] }}
   # 2. stale-restore guard: an event entity's state IS the receipt timestamp of
   #    its last event. A genuine press is stamped ~now; a state restored after an
   #    availability flap (z2m restart, MQTT reconnect) carries the *original*,
