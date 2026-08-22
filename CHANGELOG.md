@@ -17,6 +17,19 @@
   zigbee2mqtt-ikea_tradfri, zigbee2mqtt-aqara-cube,
   zigbee2mqtt-green_power_button).
 
+### zigbee2mqtt-tuya_1_to_4_buttons.yaml
+
+- Fix unprefixed-action dispatch: the button 1 branches matched a bare
+  `single`/`double`/`hold` unconditionally, so on devices that emit an
+  unprefixed action plus a `button` attribute, holds (and presses) of
+  buttons 2-4 ran button 1's action. An unprefixed action now routes by the
+  `button` attribute; only a device that sends no `button` attribute at all
+  (single-button remotes) still maps to button 1, and an unparseable `button`
+  value (explicit null, `both`, ...) falls through to the logbook default
+  instead of being misrouted. Supersedes the unconditional bare-`hold`
+  handling introduced on 2026-02-28. Hold dispatch fixed by
+  @GabrielGoldsteinAnidea (#3) and generalized to `single`/`double`.
+
 ### zigbee2mqtt-aqara-cube.yaml
 
 - Prefer the event's own `side` attribute over the derived `*_side` sensor for
