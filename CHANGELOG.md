@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-08-22
+
+### All blueprints
+
+- Replace the `not_from: [unavailable, unknown]` trigger filter with a state
+  freshness condition (reject events whose state timestamp is older than 5s).
+  `not_from` also swallowed the first genuine press after a Home Assistant
+  restart, because restored event entities start at `unknown`
+  (home-assistant/core#142263). The freshness test blocks the same stale
+  replays without that blind spot, and being mechanism-independent it also
+  covers retained-MQTT replays. `not_to` is kept — it suppresses the harmless
+  outbound half of the availability flap. Introduced in
+  zigbee2mqtt-tuya_1_to_4_buttons by @GabrielGoldsteinAnidea (#2) and extended
+  to the remaining blueprints (zigbee2mqtt-nedis-remote,
+  zigbee2mqtt-ikea_tradfri, zigbee2mqtt-aqara-cube,
+  zigbee2mqtt-green_power_button).
+
 ## 2026-07-16
 
 ### All blueprints
