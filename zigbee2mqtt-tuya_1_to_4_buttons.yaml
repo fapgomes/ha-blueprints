@@ -107,11 +107,27 @@ trigger:
     not_to:
       - unavailable
       - unknown
-    not_from:
-      - unavailable
-      - unknown
 condition:
-  - "{{ trigger.to_state.attributes.event_type | default('') != '' }}"
+  # 1. an actual action must be present.
+  #    `not in [none, '']` rather than `| default('') != ''`: Jinja's default
+  #    filter only substitutes for an *undefined* value, so an attribute that
+  #    is explicitly None passes the default() form and leaks through.
+  - condition: template
+    value_template: >-
+      {{ trigger.to_state.attributes.event_type | default('') not in [none, ''] }}
+  # 2. stale-restore guard: an event entity's state IS the receipt timestamp of
+  #    its last event. A genuine press is stamped ~now; a state restored after an
+  #    availability flap (z2m restart, MQTT reconnect) carries the *original*,
+  #    old timestamp, which is what replays the last press. Rejecting anything
+  #    older than 5s blocks that. This replaces a `not_from: [unavailable,
+  #    unknown]` filter: not_from also swallows the first genuine press after an
+  #    HA restart, because restored event entities start at `unknown`
+  #    (home-assistant/core#142263). The freshness test has no such blind spot,
+  #    and being mechanism-independent it also covers a retained-MQTT replay.
+  #    as_timestamp(..., 0) makes an unparseable state fail closed.
+  - condition: template
+    value_template: >-
+      {{ (now().timestamp() - as_timestamp(trigger.to_state.state, 0)) < 5 }}
 action:
   - variables:
       event_type: "{{ trigger.to_state.attributes.event_type }}"
