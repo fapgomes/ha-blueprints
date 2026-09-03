@@ -54,3 +54,9 @@ Supports all 10 Aqara Cube events via Zigbee2MQTT:
 </p>
 
 [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Ffapgomes%2Fha-blueprints%2Fblob%2Fmain%2Fzigbee2mqtt-green_power_button.yaml)
+
+## Support the project
+
+If this project is useful to you, consider buying me a coffee to help keep it going:
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-fapgomes-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/fapgomes)
